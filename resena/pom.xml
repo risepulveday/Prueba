@@ -8,11 +8,11 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.3</version> <relativePath/> </parent>
     
-    <groupId>com.User</groupId>
-    <artifactId>user</artifactId>
+    <groupId>com.Resena</groupId>
+    <artifactId>resena</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>user-service</name>
-    <description>Microservicio de Usuarios</description>
+    <name>resena-service</name>
+    <description>Microservicio de Resena</description>
 
     <properties>
         <java.version>21</java.version>
