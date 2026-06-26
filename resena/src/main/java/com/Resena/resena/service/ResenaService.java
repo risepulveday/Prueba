@@ -1,4 +1,4 @@
-package com.Factura.factura.service;
+package com.Resena.resena.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FacturaService {
+public class ResenaService {
 
     @Autowired
     private FacturaRepository facturaRepository;

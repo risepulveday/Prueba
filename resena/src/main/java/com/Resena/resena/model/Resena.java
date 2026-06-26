@@ -1,4 +1,4 @@
-package com.Factura.factura.model;
+package com.Resena.resena.model;
 
 import java.sql.Date;
 
@@ -7,19 +7,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
-@Table(name = "factura")
+@Table(name = "resena")
 @Data
-public class FacturaModel {
+public class Resena {
     //Generacion de id para tabla factura en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_factura")
+    @Column(name = "id_resena")
     private Long idFactura;
 
     //Generacion del total para tabla factura en integer
-    @NotNull(message = "El total es obligatorio")
-    @Column(name = "total")
-    private Integer total;
+    @NotNull(message = "La calificacion es obligatoria")
+    @Column(name = "calificacion")
+    private Integer calificacion;
 
     //Generacion de fecha para tabla factura en Date
     @NotNull(message = "La fecha es automatica")
@@ -27,12 +27,11 @@ public class FacturaModel {
     private Date fecha;
 
     //Generacion del estado de orden para tabla factura en boolean
-    @NotNull(message = "Estado de orden")
-    @Column(name = "Estado_orden")
-    private boolean estadoOrden;
+    @Column(name = "comentario")
+    private String comentario;
 
     // Guardamos solo el ID para consultar el microservicio de Pagos vía Feign
-    @NotNull(message = "El id de pago es obligatorio")
-    @Column(name = "id_pago")
-    private Long idPago;
+    @NotNull(message = "usuario automatico")
+    @Column(name = "id_usuario")
+    private Long idUsuario;
 }
