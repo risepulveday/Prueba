@@ -15,12 +15,10 @@ public class ResenaModelAssembler implements RepresentationModelAssembler<Resena
     @Override
     public EntityModel<ResenaModel> toModel(ResenaModel resena) { // Cambiado de 'usuario' a 'resena'
         return EntityModel.of(resena,
-            // Link al recurso individual (Self)
-            linkTo(methodOn(ResenaControllerV2.class).getResenaById(resena.getIdResena())).withSelfRel(),
-            
-            // Link a la colección completa de recursos (Relación: "resenas")
-            linkTo(methodOn(ResenaControllerV2.class).getAllResenas()).withRel("resenas")
-        );
+                // Link al recurso individual (Self)
+                linkTo(methodOn(ResenaControllerV2.class).getResenaById(resena.getIdResena())).withSelfRel(),
+
+                // Link a la colección completa de recursos (Relación: "resenas")
+                linkTo(methodOn(ResenaControllerV2.class).getAllResenas()).withRel("resenas"));
     }
 }
-

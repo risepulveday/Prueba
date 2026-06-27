@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Table(name = "resena")
 @Data
-public class Resena {
+public class ResenaModel {
     // Generacion de id para tabla factura en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

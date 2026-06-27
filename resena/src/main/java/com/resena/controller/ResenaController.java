@@ -62,7 +62,7 @@ public class ResenaController {
         }
     }
 
-    //6. Buscar por fecha: /api/resenas/buscar-fecha?fecha=2026-06-19
+    // 6. Buscar por fecha: /api/resenas/buscar-fecha?fecha=2026-06-19
     @GetMapping("/buscar-fecha")
     public ResponseEntity<List<ResenaModel>> buscarPorFecha(@RequestParam("fecha") Date fecha) {
         List<ResenaModel> resenas = resenaService.buscarPorFecha(fecha);
@@ -72,7 +72,7 @@ public class ResenaController {
         return new ResponseEntity<>(resenas, HttpStatus.OK);
     }
 
-    //7. Buscar por total: /api/resenas/buscar-total?total=1500
+    // 7. Buscar por total: /api/resenas/buscar-total?total=1500
     @GetMapping("/buscar-total")
     public ResponseEntity<List<ResenaModel>> buscarPorTotal(@RequestParam("total") Integer total) {
         List<ResenaModel> resenas = resenaService.buscarPorTotal(total);

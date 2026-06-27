@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v2/resenas")
-public class ResenaControllerV2{
+public class ResenaControllerV2 {
 
     @Autowired
-    private ResenaService resenaService; 
+    private ResenaService resenaService;
 
     @Autowired
     private ResenaModelAssembler assembler;
@@ -27,9 +27,10 @@ public class ResenaControllerV2{
     public EntityModel<ResenaModel> getResenaById(@PathVariable Long id) {
         ResenaModel resena = resenaService.obtenerPorId(id) // Usando la variable inyectada 'resenaService'
                 .orElseThrow(() -> new RuntimeException("Resena no encontrada con el id: " + id));
-                
+
         return assembler.toModel(resena);
     }
+
     // 2. Obtener todas las resenas con HATEOAS (Requerido por tu Assembler)
     @GetMapping
     public CollectionModel<EntityModel<ResenaModel>> getAllResenas() {
