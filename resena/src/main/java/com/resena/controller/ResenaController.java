@@ -1,84 +1,89 @@
-package com.Resena.resena.controller;
+package com.resena.controller;
 
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.resena.model.ResenaModel;
+import com.resena.service.ResenaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.Resena.resena.model.ResenaModel;
-import com.Resena.resena.service.ResenaService;
 
 import java.sql.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/resena")
+@RequestMapping("/api/resenas") // Ruta base para los endpoints de reseñas
 public class ResenaController {
-    @Autowired
-    private ResenaService resenaService;
 
-    // 1. Crear una nueva resena
+    private final ResenaService resenaService;
+
+    // Inyección por Constructor (Evita alertas en VS Code)
+    public ResenaController(ResenaService resenaService) {
+        this.resenaService = resenaService;
+    }
+
+    // 1. Crear una nueva reseña
     @PostMapping
-    public ResponseEntity<ResenaModel> crearResena(@Valid @RequestBody ResenaModel resena) {
+    public ResponseEntity<ResenaModel> crearResena(@RequestBody ResenaModel resena) {
         ResenaModel nuevaResena = resenaService.crearResena(resena);
         return new ResponseEntity<>(nuevaResena, HttpStatus.CREATED);
     }
 
-    // 2. Obtener todas las resenas
+    // 2. Obtener todas las reseñas
+    @SuppressWarnings("unused")
     @GetMapping
     public ResponseEntity<List<ResenaModel>> obtenerTodas() {
         List<ResenaModel> resenas = resenaService.obtenerTodas();
-        return new ResponseEntity<>(resenas, HttpStatus.OK);
+        return ResponseEntity.ok(resenas);
     }
 
-    // 3. Obtener una resena por ID
+    // 3. Obtener una reseña por su ID
     @GetMapping("/{id}")
     public ResponseEntity<ResenaModel> obtenerPorId(@PathVariable Long id) {
         return resenaService.obtenerPorId(id)
-                .map(resena -> new ResponseEntity<>(resena, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // 4. Actualizar una resena existente
+    // 4. Actualizar una reseña existente
     @PutMapping("/{id}")
-    public ResponseEntity<ResenaModel> actualizarResena(@PathVariable Long id, @Valid @RequestBody ResenaModel resena) {
+    public ResponseEntity<ResenaModel> actualizarResena(@PathVariable Long id,
+            @RequestBody ResenaModel resenaDetalles) {
         try {
-            ResenaModel resenaActualizada = resenaService.actualizarResena(id, resena);
-            return new ResponseEntity<>(resenaActualizada, HttpStatus.OK);
+            ResenaModel resenaActualizada = resenaService.actualizarResena(id, resenaDetalles);
+            return ResponseEntity.ok(resenaActualizada);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // 5. Eliminar una resena
+    // 5. Eliminar una reseña
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarResena(@PathVariable Long id) {
         try {
             resenaService.eliminarResena(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content es lo ideal para deletes exitosos
+            return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // 6. Buscar por fecha: /api/resenas/buscar-fecha?fecha=2026-06-19
-    @GetMapping("/buscar-fecha")
-    public ResponseEntity<List<ResenaModel>> buscarPorFecha(@RequestParam("fecha") Date fecha) {
+    // 6. Buscar reseñas por una fecha específica
+    @GetMapping("/buscar/fecha")
+    public ResponseEntity<List<ResenaModel>> buscarPorFecha(@RequestParam Date fecha) {
         List<ResenaModel> resenas = resenaService.buscarPorFecha(fecha);
-        if (resenas.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 si no hay resultados
-        }
-        return new ResponseEntity<>(resenas, HttpStatus.OK);
+        return ResponseEntity.ok(resenas);
     }
 
-    // 7. Buscar por total: /api/resenas/buscar-total?total=1500
-    @GetMapping("/buscar-total")
-    public ResponseEntity<List<ResenaModel>> buscarPorTotal(@RequestParam("total") Integer total) {
-        List<ResenaModel> resenas = resenaService.buscarPorTotal(total);
-        if (resenas.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(resenas, HttpStatus.OK);
+    // 7. Buscar reseñas por calificación (estrellas)
+    @GetMapping("/buscar/calificacion")
+    public ResponseEntity<List<ResenaModel>> buscarPorCalificacion(@RequestParam Integer calificacion) {
+        List<ResenaModel> resenas = resenaService.buscarPorCalificacion(calificacion);
+        return ResponseEntity.ok(resenas);
+    }
+
+    // 8. Buscar todas las reseñas de un usuario en particular
+    @GetMapping("/buscar/usuario/{idUsuario}")
+    public ResponseEntity<List<ResenaModel>> buscarPorUsuario(@PathVariable Long idUsuario) {
+        List<ResenaModel> resenas = resenaService.buscarPorUsuario(idUsuario);
+        return ResponseEntity.ok(resenas);
     }
 }

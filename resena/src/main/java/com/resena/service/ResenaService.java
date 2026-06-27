@@ -1,14 +1,13 @@
-package com.Resena.resena.service;
+package com.resena.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-// Importa aquí tu cliente Feign y tu DTO de Pago cuando los tengas creados:
-// import com.Resena.resena.client.PagoFeignClient;
-// import com.Resena.resena.dto.PagoDTO;
+// Importa aquí tu cliente Feign y tu DTO de Usuario cuando los tengas creados:
+// import com.resena.client.UsuarioFeignClient;
+// import com.resena.dto.UsuarioDTO;
 
-import com.Resena.resena.model.ResenaModel;
-import com.Resena.resena.repository.ResenaRepository;
+import com.resena.model.ResenaModel;
+import com.resena.repository.ResenaRepository;
 
 import java.sql.Date;
 import java.util.List;
@@ -17,76 +16,88 @@ import java.util.Optional;
 @Service
 public class ResenaService {
 
-    @Autowired
-    private ResenaRepository resenaRepository;
-    // @Autowired
-    // private PagoFeignClient pagoFeignClient; // Tu cliente Feign para conectar
-    // con el microservicio de pagos
+    private final ResenaRepository resenaRepository;
 
-    // 1. Crear o Guardar una resena
+    // // Tu cliente Feign para conectar con el microservicio de usuarios si fuera
+    // necesario
+    // private final UsuarioFeignClient usuarioFeignClient;
+
+    // Inyección por Constructor (Evita el warning de VS Code)
+    public ResenaService(ResenaRepository resenaRepository) {
+        this.resenaRepository = resenaRepository;
+    }
+
+    // 1. Crear o Guardar una reseña
     public ResenaModel crearResena(ResenaModel resena) {
-        // Aquí podrías agregar lógica antes de guardar, por ejemplo, validar si el
-        // idPago realmente existe usando Feign
+        // Lógica de negocio opcional: Validar si el idUsuario existe en el
+        // microservicio de usuarios vía Feign antes de guardar.
         return resenaRepository.save(resena);
     }
 
-    // 2. Obtener todas las resenas
+    // 2. Obtener todas las reseñas
     public List<ResenaModel> obtenerTodas() {
         return resenaRepository.findAll();
     }
 
-    // 3. Obtener una resena por ID
+    // 3. Obtener una reseña por ID
     public Optional<ResenaModel> obtenerPorId(Long id) {
         return resenaRepository.findById(id);
     }
 
-    // 4. Actualizar una resena
+    // 4. Actualizar una reseña (Adaptado a tu ResenaModel real)
     public ResenaModel actualizarResena(Long id, ResenaModel resenaDetalles) {
         return resenaRepository.findById(id).map(resena -> {
-            resena.setTotal(resenaDetalles.getTotal());
+            resena.setCalificacion(resenaDetalles.getCalificacion());
             resena.setFecha(resenaDetalles.getFecha());
-            resena.setEstadoOrden(resenaDetalles.isEstadoOrden());
-            resena.setIdPago(resenaDetalles.getIdPago());
+            resena.setComentario(resenaDetalles.getComentario());
+            resena.setIdUsuario(resenaDetalles.getIdUsuario());
             return resenaRepository.save(resena);
-        }).orElseThrow(() -> new RuntimeException("Resena no encontrada con el id: " + id));
+        }).orElseThrow(() -> new RuntimeException("Reseña no encontrada con el id: " + id));
     }
 
-    // 5. Eliminar una resena
+    // 5. Eliminar una reseña
     public void eliminarResena(Long id) {
         if (resenaRepository.existsById(id)) {
             resenaRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Resena no encontrada con el id: " + id);
+            throw new RuntimeException("Reseña no encontrada con el id: " + id);
         }
     }
 
-    // 6. Buscar resenas por fecha
+    // 6. Buscar reseñas por fecha
     public List<ResenaModel> buscarPorFecha(Date fecha) {
         return resenaRepository.findByFecha(fecha);
     }
 
-    // 7. Buscar resenas por total
-    public List<ResenaModel> buscarPorTotal(Integer total) {
-        return resenaRepository.findByTotal(total);
+    // 7. Buscar reseñas por calificación (Corregido de 'buscarPorTotal' a
+    // 'buscarPorCalificacion')
+    public List<ResenaModel> buscarPorCalificacion(Integer calificacion) {
+        return resenaRepository.findByCalificacion(calificacion);
+    }
+
+    // 8. Buscar reseñas asociadas a un usuario específico (Muy útil para este
+    // microservicio)
+    public List<ResenaModel> buscarPorUsuario(Long idUsuario) {
+        return resenaRepository.findByIdUsuario(idUsuario);
     }
 
     // =========================================================================
-    // EJEMPLO CON FEIGN: Obtener la resena junto con la información del Pago
+    // EJEMPLO CON FEIGN: Obtener la reseña junto con la información del Usuario
     // =========================================================================
     /*
-     * public ResenaConPagoDTO obtenerResenaConSuPago(Long idResena) {
+     * public ResenaConUsuarioDTO obtenerResenaConSuUsuario(Long idResena) {
      * ResenaModel resena = resenaRepository.findById(idResena)
-     * .orElseThrow(() -> new RuntimeException("Resena no encontrada"));
-     * 
-     * // Consumimos el microservicio de pagos usando Feign mediante el id guardado
-     * PagoDTO pago = pagoFeignClient.obtenerPagoPorId(resena.getIdPago());
-     * 
-     * // Armamos un DTO propio que junte ambas respuestas para el frontend
-     * ResenaConPagoDTO respuesta = new ResenaConPagoDTO();
+     * .orElseThrow(() -> new RuntimeException("Reseña no encontrada"));
+     * * // Consumimos el microservicio de usuarios usando Feign mediante el
+     * id_usuario guardado
+     * UsuarioDTO usuario =
+     * usuarioFeignClient.obtenerUsuarioPorId(resena.getIdUsuario());
+     * * // Armamos un DTO propio que junte ambas respuestas para devolverlo
+     * completo
+     * ResenaConUsuarioDTO respuesta = new ResenaConUsuarioDTO();
      * respuesta.setResena(resena);
-     * respuesta.setPago(pago);
-     * 
-     * return respuesta;
+     * respuesta.setUsuario(usuario);
+     * * return respuesta;
      * }
      */
 }

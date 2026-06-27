@@ -1,19 +1,19 @@
-package com.Resena.resena.repository;
+package com.resena.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import com.Resena.resena.model.ResenaModel;
+import com.resena.model.ResenaModel;
 
 import java.sql.Date;
 import java.util.List;
 
-@Repository
 public interface ResenaRepository extends JpaRepository<ResenaModel, Long> {
 
-    // Busca resenas que coincidan exactamente con una fecha
+    // 1. Permite buscar reseñas por su fecha
     List<ResenaModel> findByFecha(Date fecha);
 
-    // Busca resenas que coincidan exactamente con un total
-    List<ResenaModel> findByTotal(Integer total);
+    // 2. SOLUCIÓN: Declara la búsqueda por calificación (Estrellas)
+    List<ResenaModel> findByCalificacion(Integer calificacion);
+
+    // 3. SOLUCIÓN: Declara la búsqueda por el ID del usuario remoto
+    List<ResenaModel> findByIdUsuario(Long idUsuario);
 }

@@ -1,8 +1,8 @@
-package com.Resena.resena.controller;
+package com.resena.controller;
 
-import com.Resena.resena.assemblers.ResenaModelAssembler;
-import com.Resena.resena.model.ResenaModel;
-import com.Resena.resena.service.ResenaService;
+import com.resena.assemblers.ResenaModelAssembler;
+import com.resena.model.ResenaModel;
+import com.resena.service.ResenaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;

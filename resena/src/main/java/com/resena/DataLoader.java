@@ -1,4 +1,4 @@
-package com.Resena.resena;
+package com.resena;
 
 import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,8 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import com.Resena.resena.model.ResenaModel;
-import com.Resena.resena.repository.ResenaRepository;
+import com.resena.model.ResenaModel;
+import com.resena.repository.ResenaRepository;
 
 //import java.util.Random;
 @Profile("dev")
