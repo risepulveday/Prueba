@@ -1,10 +1,10 @@
-package com.User.user;
+package com.Pago.pago;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UserApplicationTests {
+class PagoApplicationTests {
 
 	@Test
 	void contextLoads() {

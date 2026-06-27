@@ -1,4 +1,4 @@
-package com.Factura.factura.model;
+package com.Pago.pago.model;
 
 import java.sql.Date;
 
@@ -7,26 +7,26 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
-@Table(name = "factura")
+@Table(name = "pagos")
 @Data
-public class FacturaModel {
-    //Generacion de id para tabla factura en long
+public class PagoModel {
+    // Generacion de id para tabla factura en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_factura")
     private Long idFactura;
 
-    //Generacion del total para tabla factura en integer
+    // Generacion del total para tabla factura en integer
     @NotNull(message = "El total es obligatorio")
     @Column(name = "total")
     private Integer total;
 
-    //Generacion de fecha para tabla factura en Date
+    // Generacion de fecha para tabla factura en Date
     @NotNull(message = "La fecha es automatica")
     @Column(name = "fecha")
     private Date fecha;
 
-    //Generacion del estado de orden para tabla factura en boolean
+    // Generacion del estado de orden para tabla factura en boolean
     @NotNull(message = "Estado de orden")
     @Column(name = "Estado_orden")
     private boolean estadoOrden;

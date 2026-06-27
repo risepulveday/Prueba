@@ -3,7 +3,6 @@ package com.resena.controller;
 import com.resena.assemblers.ResenaModelAssembler;
 import com.resena.model.ResenaModel;
 import com.resena.service.ResenaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +15,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v2/resenas")
 public class ResenaControllerV2 {
 
-    @Autowired
-    private ResenaService resenaService;
+    private final ResenaService resenaService;
 
-    @Autowired
-    private ResenaModelAssembler assembler;
+    private final ResenaModelAssembler assembler;
+
+    ResenaControllerV2(ResenaService resenaService, ResenaModelAssembler assembler) {
+        this.resenaService = resenaService;
+        this.assembler = assembler;
+    }
 
     // 1. Obtener una resena por ID con HATEOAS
     @GetMapping("/{id}")
