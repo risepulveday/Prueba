@@ -10,23 +10,23 @@ import lombok.Data;
 @Table(name = "resena")
 @Data
 public class Resena {
-    //Generacion de id para tabla factura en long
+    // Generacion de id para tabla factura en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_resena")
-    private Long idFactura;
+    private Long idResena;
 
-    //Generacion del total para tabla factura en integer
+    // Generacion del total para tabla factura en integer
     @NotNull(message = "La calificacion es obligatoria")
     @Column(name = "calificacion")
     private Integer calificacion;
 
-    //Generacion de fecha para tabla factura en Date
+    // Generacion de fecha para tabla factura en Date
     @NotNull(message = "La fecha es automatica")
     @Column(name = "fecha")
     private Date fecha;
 
-    //Generacion del estado de orden para tabla factura en boolean
+    // Generacion del estado de orden para tabla factura en boolean
     @Column(name = "comentario")
     private String comentario;
 
