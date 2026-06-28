@@ -13,8 +13,8 @@ public class PagoModel {
     // Generacion de id para tabla factura en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_factura")
-    private Long idFactura;
+    @Column(name = "id_pago")
+    private Long idPago;
 
     // Generacion del total para tabla factura en integer
     @NotNull(message = "El total es obligatorio")
@@ -34,5 +34,5 @@ public class PagoModel {
     // Guardamos solo el ID para consultar el microservicio de Pagos vía Feign
     @NotNull(message = "El id de pago es obligatorio")
     @Column(name = "id_pago")
-    private Long idPago;
+    private Long ci;
 }

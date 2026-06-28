@@ -1,6 +1,5 @@
 package com.Pago.pago.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 // Importa aquí tu cliente Feign y tu DTO de Pago cuando los tengas creados:
@@ -17,8 +16,11 @@ import java.util.Optional;
 @Service
 public class PagoService {
 
-    @Autowired
-    private PagoRepository pagoRepository;
+    private final PagoRepository pagoRepository;
+
+    PagoService(PagoRepository pagoRepository) {
+        this.pagoRepository = pagoRepository;
+    }
     // @Autowired
     // private PagoFeignClient pagoFeignClient; // Tu cliente Feign para conectar
     // con el microservicio de pagos
