@@ -1,5 +1,7 @@
 {
     "java.compile.nullAnalysis.mode": "disabled",
     "java.configuration.updateBuildConfiguration": "interactive",
-    "spring-boot.validate.boot-version": "IGNORE"
+    "spring-boot.validate.boot-version": "IGNORE",
+    "spring-boot.ls.problem.version-validation.UNSUPPORTED_OSS_VERSION": "IGNORE",
+    "spring-boot.ls.problem.version-validation.UNSUPPORTED_COMMERCIAL_VERSION": "IGNORE"
 }
