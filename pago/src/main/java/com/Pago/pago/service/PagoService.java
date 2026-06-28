@@ -45,10 +45,10 @@ public class PagoService {
     // 4. Actualizar una pago
     public PagoModel actualizarPago(Long id, PagoModel pagoDetalles) {
         return pagoRepository.findById(id).map(pago -> {
-            pago.setTotal(pagoDetalles.getTotal());
-            pago.setFecha(pagoDetalles.getFecha());
-            pago.setEstadoOrden(pagoDetalles.isEstadoOrden());
-            pago.setIdPago(pagoDetalles.getIdPago());
+            pago.setFechaPago(pagoDetalles.getFechaPago());
+            pago.setEstadoPago(pagoDetalles.isEstadoPago());
+            pago.setMetodoPago(pagoDetalles.getMetodoPago());
+            pago.setIdFactura(pagoDetalles.getIdFactura());
             return pagoRepository.save(pago);
         }).orElseThrow(() -> new RuntimeException("Pago no encontrada con el id: " + id));
     }

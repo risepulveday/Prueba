@@ -1,7 +1,6 @@
 package com.Pago.pago;
 
 import net.datafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -9,45 +8,56 @@ import org.springframework.stereotype.Component;
 import com.Pago.pago.model.PagoModel;
 import com.Pago.pago.repository.PagoRepository;
 
-//import java.util.Random;
 @Profile("dev")
 @Component
 public class DataLoader implements CommandLineRunner {
-    @Autowired
-    private PagoRepository pagoRepository; // Corregido en minúscula por convención
+    private final PagoRepository pagoRepository;
+
+    DataLoader(PagoRepository pagoRepository) {
+        this.pagoRepository = pagoRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
         // Evita duplicar datos si la base de datos ya está poblada
         if (pagoRepository.count() > 0) {
-            System.out.println("La base de datos ya contiene facturas. Saltando inicialización de Faker.");
+            System.out.println("La base de datos ya contiene pagos. Saltando inicialización de Faker.");
             return;
         }
 
         Faker faker = new Faker();
-        System.out.println("Generando facturas de prueba con Datafaker...");
+        System.out.println("Generando pagos de prueba con Datafaker...");
 
-        // Generamos 20 facturas aleatorias
+        // Generamos 20 pagos aleatorios
         for (int i = 0; i < 20; i++) {
-            PagoModel factura = new PagoModel();
+            PagoModel pago = new PagoModel();
 
-            // 1. Total: Un monto aleatorio entre 10 y 5000
-            factura.setTotal(faker.number().numberBetween(10, 5000));
+            // 1. idPago: Se deja nulo porque está anotado con @GeneratedValue(strategy =
+            // GenerationType.IDENTITY)
+            // Windows/MySQL se encargará de incrementarlo automáticamente.
 
-            // 2. Fecha: Una fecha aleatoria entre 1 y 5 años al pasado
-            factura.setFecha(java.sql.Date.valueOf(faker.timeAndDate().birthday(1, 5)));
+            // 2. fechaPago: Usando la nueva API compatible con Datafaker 2.5.4+
+            // Genera un instante aleatorio en los últimos 30 días y lo convierte a
+            // java.sql.Date
+            java.time.Instant instantePasado = faker.timeAndDate().past(30, java.util.concurrent.TimeUnit.DAYS);
+            pago.setFechaPago(new java.sql.Date(instantePasado.toEpochMilli()));
 
-            // 3. Estado de la orden: Aleatorio (true o false)
-            factura.setEstadoOrden(faker.bool().bool());
+            // 3. estadoPago: Aleatorio (true para pago aprobado, false para
+            // rechazado/pendiente)
+            pago.setEstadoPago(faker.bool().bool());
 
-            // 4. ID de pago: Un número aleatorio (simulando los IDs que vendrán de tu otro
-            // microservicio)
-            factura.setIdPago(faker.random().nextLong(1, 20)); // IDs de 4 dígitos
+            // 4. metodoPago: Un entero aleatorio entre 1 y 4
+            // (Simulando: 1=Tarjeta,2=Transferencia, 3=Efectivo, 4=PayPal)
+            pago.setMetodoPago(faker.number().numberBetween(1, 5));
+
+            // 5. idFactura: Un ID aleatorio largo entre 1 y 50 para simular la relación con
+            // el microservicio de Facturas Vía Feign
+            pago.setIdFactura(faker.random().nextLong(1, 51));
 
             // Guardamos en la base de datos
-            facturaRepository.save(factura);
+            pagoRepository.save(pago);
         }
 
-        System.out.println("¡Se insertaron 20 facturas falsas exitosamente!");
+        System.out.println("¡Se insertaron 20 pagos de prueba exitosamente!");
     }
 }

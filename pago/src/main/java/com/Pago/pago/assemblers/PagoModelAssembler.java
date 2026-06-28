@@ -6,19 +6,19 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import com.Factura.factura.controller.PagoControllerV2;
-import com.Factura.factura.model.PagoModel;
+import com.Pago.pago.controller.PagoControllerV2;
+import com.Pago.pago.model.PagoModel;
 
 @Component
 public class PagoModelAssembler implements RepresentationModelAssembler<PagoModel, EntityModel<PagoModel>> {
 
     @Override
-    public EntityModel<PagoModel> toModel(PagoModel factura) { // Cambiado de 'usuario' a 'factura'
-        return EntityModel.of(factura,
+    public EntityModel<PagoModel> toModel(PagoModel pago) {
+        return EntityModel.of(pago,
                 // Link al recurso individual (Self)
-                linkTo(methodOn(PagoControllerV2.class).getFacturaById(factura.getIdFactura())).withSelfRel(),
+                linkTo(methodOn(PagoControllerV2.class).getPagoById(pago.getIdPago())).withSelfRel(),
 
-                // Link a la colección completa de recursos (Relación: "facturas")
-                linkTo(methodOn(PagoControllerV2.class).getAllFacturas()).withRel("facturas"));
+                // Link a la colección completa de recursos (Relación: "pagos")
+                linkTo(methodOn(PagoControllerV2.class).getAllPagos()).withRel("pagos"));
     }
 }

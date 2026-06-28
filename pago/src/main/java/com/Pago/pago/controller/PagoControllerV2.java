@@ -3,7 +3,6 @@ package com.Pago.pago.controller;
 import com.Pago.pago.assemblers.PagoModelAssembler;
 import com.Pago.pago.model.PagoModel;
 import com.Pago.pago.service.PagoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
@@ -36,12 +35,12 @@ public class PagoControllerV2 {
 
     // 2. Obtener todas las pagos con HATEOAS (Requerido por tu Assembler)
     @GetMapping
-    public CollectionModel<EntityModel<PagoModel>> getAllFacturas() {
+    public CollectionModel<EntityModel<PagoModel>> getAllPagos() {
         List<EntityModel<PagoModel>> pagos = pagoService.obtenerTodas().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(pagos,
-                linkTo(methodOn(PagoControllerV2.class).getAllFacturas()).withSelfRel());
+                linkTo(methodOn(PagoControllerV2.class).getAllPagos()).withSelfRel());
     }
 }
