@@ -6,8 +6,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import com.Oferta.pago.controller.OfertaControllerV2;
-import com.Oferta.pago.model.OfertaModel;
+import com.Oferta.oferta.controller.OfertaControllerV2;
+import com.Oferta.oferta.model.OfertaModel;
 
 @Component
 public class OfertaModelAssembler implements RepresentationModelAssembler<OfertaModel, EntityModel<OfertaModel>> {
@@ -15,12 +15,10 @@ public class OfertaModelAssembler implements RepresentationModelAssembler<Oferta
     @Override
     public EntityModel<OfertaModel> toModel(OfertaModel oferta) {
         return EntityModel.of(oferta,
-            // Link al recurso individual (Self)
-            linkTo(methodOn(OfertaController.class).getOfertaById(oferta.getIdOferta())).withSelfRel(),
-            
-            // Link a la colección completa de recursos (Relación: "ofertas")
-            linkTo(methodOn(OfertaController.class).getAllOfertas()).withRel("ofertas")
-        );
+                // Link al recurso individual (Self)
+                linkTo(methodOn(OfertaControllerV2.class).getOfertaById(oferta.getIdOferta())).withSelfRel(),
+
+                // Link a la colección completa de recursos (Relación: "ofertas")
+                linkTo(methodOn(OfertaControllerV2.class).getAllOfertas()).withRel("ofertas"));
     }
 }
-

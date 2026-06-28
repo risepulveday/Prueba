@@ -10,17 +10,17 @@ import com.Notificacion.notificacion.controller.NotificacionControllerV2;
 import com.Notificacion.notificacion.model.NotificacionModel;
 
 @Component
-public class NotificacionModelAssembler implements RepresentationModelAssembler<NotificacionModel, EntityModel<NotificacionModel>> {
+public class NotificacionModelAssembler
+        implements RepresentationModelAssembler<NotificacionModel, EntityModel<NotificacionModel>> {
 
     @Override
     public EntityModel<NotificacionModel> toModel(NotificacionModel notificacion) {
         return EntityModel.of(notificacion,
-            // Link al recurso individual (Self)
-            linkTo(methodOn(NotificacionControllerV2.class).getNotificacionById(notificacion.getIdNotificacion())).withSelfRel(),
-            
-            // Link a la colección completa de recursos (Relación: "notificaciones")
-            linkTo(methodOn(NotificacionControllerV2.class).getAllNotificaciones()).withRel("notificaciones")
-        );
+                // Link al recurso individual (Self)
+                linkTo(methodOn(NotificacionControllerV2.class).getNotificacionById(notificacion.getIdNotificacion()))
+                        .withSelfRel(),
+
+                // Link a la colección completa de recursos (Relación: "notificaciones")
+                linkTo(methodOn(NotificacionControllerV2.class).getAllNotificacions()).withRel("notificaciones"));
     }
 }
-

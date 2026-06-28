@@ -15,12 +15,10 @@ public class LlaveModelAssembler implements RepresentationModelAssembler<LlaveMo
     @Override
     public EntityModel<LlaveModel> toModel(LlaveModel llave) { // Cambiado de 'usuario' a 'factura'
         return EntityModel.of(llave,
-            // Link al recurso individual (Self)
-            linkTo(methodOn(LlaveController.class).getLlaveById(llave.getIdLlave())).withSelfRel(),
-            
-            // Link a la colección completa de recursos (Relación: "llaves")
-            linkTo(methodOn(LlaveController.class).getAllLlaves()).withRel("llaves")
-        );
+                // Link al recurso individual (Self)
+                linkTo(methodOn(LlaveControllerV2.class).getLlaveById(llave.getIdLlave())).withSelfRel(),
+
+                // Link a la colección completa de recursos (Relación: "llaves")
+                linkTo(methodOn(LlaveControllerV2.class).getAllLlaves()).withRel("llaves"));
     }
 }
-

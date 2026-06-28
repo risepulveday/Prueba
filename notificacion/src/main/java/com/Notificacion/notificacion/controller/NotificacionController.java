@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.Notificacion.notificacion.model.NotificacionModel;
-import com.FNotificacion.notificacion.service.NotificacionService;
+import com.Notificacion.notificacion.service.NotificacionService;
 
 import java.sql.Date;
 import java.util.List;
@@ -42,7 +42,8 @@ public class NotificacionController {
 
     // 4. Actualizar una notificacion existente
     @PutMapping("/{id}")
-    public ResponseEntity<NotificacionModel> actualizarNotificacion(@PathVariable Long id, @Valid @RequestBody NotificacionModel notificacion) {
+    public ResponseEntity<NotificacionModel> actualizarNotificacion(@PathVariable Long id,
+            @Valid @RequestBody NotificacionModel notificacion) {
         try {
             NotificacionModel notificacionActualizada = notificacionService.actualizarNotificacion(id, notificacion);
             return new ResponseEntity<>(notificacionActualizada, HttpStatus.OK);
@@ -62,7 +63,7 @@ public class NotificacionController {
         }
     }
 
-    //6. Buscar por fecha: /api/notificacions/buscar-fecha?fecha=2026-06-19
+    // 6. Buscar por fecha: /api/notificacions/buscar-fecha?fecha=2026-06-19
     @GetMapping("/buscar-fecha")
     public ResponseEntity<List<NotificacionModel>> buscarPorFecha(@RequestParam("fecha") Date fecha) {
         List<NotificacionModel> notificacions = notificacionService.buscarPorFecha(fecha);
@@ -72,7 +73,7 @@ public class NotificacionController {
         return new ResponseEntity<>(notificacions, HttpStatus.OK);
     }
 
-    //7. Buscar por usuario ID: /api/notificacions/buscar-usuario?idUsuario=1
+    // 7. Buscar por usuario ID: /api/notificacions/buscar-usuario?idUsuario=1
     @GetMapping("/buscar-usuario")
     public ResponseEntity<List<NotificacionModel>> buscarPorUsuario(@RequestParam("idUsuario") Long idUsuario) {
         List<NotificacionModel> notificacions = notificacionService.buscarPorUsuario(idUsuario);

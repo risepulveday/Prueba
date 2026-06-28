@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.Oferta.oferta.model.OfertaModel;
 
-import java.sql.Date;
 import java.util.List;
 
 @Repository

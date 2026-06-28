@@ -1,4 +1,5 @@
 package com.Notificacion.notificacion;
+
 import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +12,7 @@ import com.Notificacion.notificacion.repository.NotificacionRepository;
 //import java.util.Random;
 @Profile("dev")
 @Component
-public class DataLoader implements CommandLineRunner{
+public class DataLoader implements CommandLineRunner {
     @Autowired
     private NotificacionRepository notificacionRepository; // Corregido en minúscula por convención
 
@@ -29,18 +30,13 @@ public class DataLoader implements CommandLineRunner{
         // Generamos 20 notificacions aleatorias
         for (int i = 0; i < 20; i++) {
             NotificacionModel notificacion = new NotificacionModel();
-            
-            // 1. Total: Un monto aleatorio entre 10 y 5000
-            notificacion.setTotal(faker.number().numberBetween(10, 5000));
-            
-            // 2. Fecha: Una fecha aleatoria entre 1 y 5 años al pasado
-            notificacion.setFecha(java.sql.Date.valueOf(faker.timeAndDate().birthday(1, 5))); 
 
-            // 3. Estado de la orden: Aleatorio (true o false)
-            notificacion.setEstadoOrden(faker.bool().bool());
-            
-            // 4. ID de pago: Un número aleatorio (simulando los IDs que vendrán de tu otro microservicio)
-            notificacion.setIdPago(faker.random().nextLong(1,20)); // IDs de 4 dígitos
+            // 2. Fecha: Una fecha aleatoria entre 1 y 5 años al pasado
+            notificacion.setFecha(java.sql.Date.valueOf(faker.timeAndDate().birthday(1, 5)));
+
+            // 3. ID de usuario: Un número aleatorio (simulando los IDs que vendrán de tu
+            // otro microservicio)
+            notificacion.setIdUsuario(faker.random().nextLong(1, 20)); // IDs de 4 dígitos
 
             // Guardamos en la base de datos
             notificacionRepository.save(notificacion);

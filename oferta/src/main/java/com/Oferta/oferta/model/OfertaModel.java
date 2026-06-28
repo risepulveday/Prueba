@@ -1,7 +1,5 @@
 package com.Oferta.oferta.model;
 
-import java.sql.Date;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,13 +8,13 @@ import lombok.Data;
 @Table(name = "oferta")
 @Data
 public class OfertaModel {
-    //Generacion de id para tabla oferta en long
+    // Generacion de id para tabla oferta en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_oferta")
     private Long idOferta;
 
-    //Generacion de la oferta en integer
+    // Generacion de la oferta en integer
     @NotNull(message = "El descuento es obligatorio")
     @Column(name = "descuento")
     private Integer descuento;

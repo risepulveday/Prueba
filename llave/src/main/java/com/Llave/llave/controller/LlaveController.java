@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.Llave.llave.model.LlaveModel;
 import com.Llave.llave.service.LlaveService;
 
-import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -34,7 +33,7 @@ public class LlaveController {
 
     // 3. Obtener una llave por ID
     @GetMapping("/{id}")
-    public ResponseEntity<LlaveModel> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<LlaveModel> getLlaveById(@PathVariable Long id) {
         return llaveService.obtenerPorId(id)
                 .map(llave -> new ResponseEntity<>(llave, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -62,7 +61,7 @@ public class LlaveController {
         }
     }
 
-    //6. Buscar por juego ID: /api/llaves/buscar-juego?idJuego=1
+    // 6. Buscar por juego ID: /api/llaves/buscar-juego?idJuego=1
     @GetMapping("/buscar-juego")
     public ResponseEntity<List<LlaveModel>> buscarPorJuego(@RequestParam("idJuego") Long idJuego) {
         List<LlaveModel> llaves = llaveService.buscarPorJuego(idJuego);

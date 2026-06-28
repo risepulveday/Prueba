@@ -6,10 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.Oferta.pago.model.OfertaModel;
-import com.Oferta.pago.service.OfertaService;
+import com.Oferta.oferta.model.OfertaModel;
+import com.Oferta.oferta.service.OfertaService;
 
-import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -62,8 +61,7 @@ public class OfertaController {
         }
     }
 
-
-    //6. Buscar por descuento: /api/ofertas/buscar-descuento?descuento=20
+    // 6. Buscar por descuento: /api/ofertas/buscar-descuento?descuento=20
     @GetMapping("/buscar-descuento")
     public ResponseEntity<List<OfertaModel>> buscarPorDescuento(@RequestParam("descuento") Integer descuento) {
         List<OfertaModel> ofertas = ofertaService.buscarPorDescuento(descuento);

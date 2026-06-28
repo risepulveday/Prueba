@@ -1,7 +1,5 @@
 package com.Llave.llave.model;
 
-import java.sql.Date;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,7 +8,7 @@ import lombok.Data;
 @Table(name = "llave")
 @Data
 public class LlaveModel {
-    //Generacion de id para tabla llave en long
+    // Generacion de id para tabla llave en long
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_llave")

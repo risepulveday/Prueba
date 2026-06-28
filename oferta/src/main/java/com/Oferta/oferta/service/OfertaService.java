@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.Oferta.oferta.model.OfertaModel;
 import com.Oferta.oferta.repository.OfertaRepository;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +19,13 @@ public class OfertaService {
     @Autowired
     private OfertaRepository ofertaRepository;
     // @Autowired
-    // private PagoFeignClient pagoFeignClient; // Tu cliente Feign para conectar con el microservicio de pagos
+    // private PagoFeignClient pagoFeignClient; // Tu cliente Feign para conectar
+    // con el microservicio de pagos
 
     // 1. Crear o Guardar una oferta
     public OfertaModel crearOferta(OfertaModel oferta) {
-        // Aquí podrías agregar lógica antes de guardar, por ejemplo, validar si el idPago realmente existe usando Feign
+        // Aquí podrías agregar lógica antes de guardar, por ejemplo, validar si el
+        // idPago realmente existe usando Feign
         return ofertaRepository.save(oferta);
     }
 
