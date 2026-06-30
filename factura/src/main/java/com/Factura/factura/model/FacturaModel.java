@@ -1,7 +1,6 @@
 package com.Factura.factura.model;
 
 import java.sql.Date;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,28 +9,38 @@ import lombok.Data;
 @Table(name = "factura")
 @Data
 public class FacturaModel {
-    //Generacion de id para tabla factura en long
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_factura")
     private Long idFactura;
 
-    //Generacion del total para tabla factura en integer
     @NotNull(message = "El total es obligatorio")
     @Column(name = "total")
     private Integer total;
 
-    //Generacion de fecha para tabla factura en Date
-    @NotNull(message = "La fecha es automatica")
+    @NotNull(message = "La fecha es obligatoria")
     @Column(name = "fecha")
     private Date fecha;
 
-    //Generacion del estado de orden para tabla factura en boolean
-    @NotNull(message = "Estado de orden")
-    @Column(name = "Estado_orden")
+    @NotNull(message = "El estado de orden es obligatorio")
+    @Column(name = "estado_orden")
     private boolean estadoOrden;
 
-    // Guardamos solo el ID para consultar el microservicio de Pagos vía Feign
+    // 👤 Llave lógica externa conectada al Microservicio de Usuarios
+    // (Puerto 8080)
+    @NotNull(message = "El id de usuario es obligatorio")
+    @Column(name = "id_usuario")
+    private Long idUsuario;
+
+    // 🛒 Llave lógica externa conectada al Microservicio de Carrito
+    // (Puerto 8082)
+    @NotNull(message = "El id de carrito es obligatorio")
+    @Column(name = "id_carrito")
+    private Long idCarrito;
+
+    // 💳 Llave lógica externa conectada al Microservicio de Pagos
+    // (Puerto 8085)
     @NotNull(message = "El id de pago es obligatorio")
     @Column(name = "id_pago")
     private Long idPago;

@@ -1,7 +1,6 @@
 package com.Factura.factura.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/factura")
 public class FacturaController {
-    @Autowired
-    private FacturaService facturaService;
+    private final FacturaService facturaService;
+
+    FacturaController(FacturaService facturaService) {
+        this.facturaService = facturaService;
+    }
 
     // 1. Crear una nueva factura
     @PostMapping
@@ -42,7 +44,8 @@ public class FacturaController {
 
     // 4. Actualizar una factura existente
     @PutMapping("/{id}")
-    public ResponseEntity<FacturaModel> actualizarFactura(@PathVariable Long id, @Valid @RequestBody FacturaModel factura) {
+    public ResponseEntity<FacturaModel> actualizarFactura(@PathVariable Long id,
+            @Valid @RequestBody FacturaModel factura) {
         try {
             FacturaModel facturaActualizada = facturaService.actualizarFactura(id, factura);
             return new ResponseEntity<>(facturaActualizada, HttpStatus.OK);
@@ -62,7 +65,7 @@ public class FacturaController {
         }
     }
 
-    //6. Buscar por fecha: /api/facturas/buscar-fecha?fecha=2026-06-19
+    // 6. Buscar por fecha: /api/facturas/buscar-fecha?fecha=2026-06-19
     @GetMapping("/buscar-fecha")
     public ResponseEntity<List<FacturaModel>> buscarPorFecha(@RequestParam("fecha") Date fecha) {
         List<FacturaModel> facturas = facturaService.buscarPorFecha(fecha);
@@ -72,7 +75,7 @@ public class FacturaController {
         return new ResponseEntity<>(facturas, HttpStatus.OK);
     }
 
-    //7. Buscar por total: /api/facturas/buscar-total?total=1500
+    // 7. Buscar por total: /api/facturas/buscar-total?total=1500
     @GetMapping("/buscar-total")
     public ResponseEntity<List<FacturaModel>> buscarPorTotal(@RequestParam("total") Integer total) {
         List<FacturaModel> facturas = facturaService.buscarPorTotal(total);
@@ -80,5 +83,17 @@ public class FacturaController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(facturas, HttpStatus.OK);
+    }
+
+    // Agrega este endpoint al final de tu FacturaController.java
+
+    @GetMapping("/{id}/completa")
+    public ResponseEntity<?> obtenerFacturaCompleta(@PathVariable Long id) {
+        try {
+            com.Factura.factura.dto.FacturaCompletaDTO facturaCompleta = facturaService.obtenerFacturaCompleta(id);
+            return ResponseEntity.ok(facturaCompleta);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.Factura.factura.controller;
 import com.Factura.factura.assemblers.FacturaModelAssembler;
 import com.Factura.factura.model.FacturaModel;
 import com.Factura.factura.service.FacturaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +13,26 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v2/facturas")
-public class FacturaControllerV2{
+public class FacturaControllerV2 {
 
-    @Autowired
-    private FacturaService facturaService; 
+    private final FacturaService facturaService;
 
-    @Autowired
-    private FacturaModelAssembler assembler;
+    private final FacturaModelAssembler assembler;
+
+    FacturaControllerV2(FacturaService facturaService, FacturaModelAssembler assembler) {
+        this.facturaService = facturaService;
+        this.assembler = assembler;
+    }
 
     // 1. Obtener una factura por ID con HATEOAS
     @GetMapping("/{id}")
     public EntityModel<FacturaModel> getFacturaById(@PathVariable Long id) {
         FacturaModel factura = facturaService.obtenerPorId(id) // Usando la variable inyectada 'facturaService'
                 .orElseThrow(() -> new RuntimeException("Factura no encontrada con el id: " + id));
-                
+
         return assembler.toModel(factura);
     }
+
     // 2. Obtener todas las facturas con HATEOAS (Requerido por tu Assembler)
     @GetMapping
     public CollectionModel<EntityModel<FacturaModel>> getAllFacturas() {
