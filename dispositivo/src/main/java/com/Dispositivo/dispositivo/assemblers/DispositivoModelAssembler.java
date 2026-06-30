@@ -10,17 +10,16 @@ import com.Dispositivo.dispositivo.controller.DispositivoControllerV2;
 import com.Dispositivo.dispositivo.model.DispositivoModel;
 
 @Component
-public class DispositivoModelAssembler implements RepresentationModelAssembler<DispositivoModel, EntityModel<DispositivoModel>> {
+public class DispositivoModelAssembler
+        implements RepresentationModelAssembler<DispositivoModel, EntityModel<DispositivoModel>> {
 
     @Override
-    public EntityModel<DispositivoModel> toModel(DispositivoModel dispositivo) { // Cambiado de 'usuario' a 'dispositivo'
+    public EntityModel<DispositivoModel> toModel(DispositivoModel dispositivo) {
         return EntityModel.of(dispositivo,
-            // Link al recurso individual (Self)
-            linkTo(methodOn(DispositivoControllerV2.class).getDispositivoById(dispositivo.getIdDispositivo())).withSelfRel(),
-            
-            // Link a la colección completa de recursos (Relación: "dispositivos")
-            linkTo(methodOn(DispositivoControllerV2.class).getAllDispositivos()).withRel("dispositivos")
-        );
+                linkTo(methodOn(DispositivoControllerV2.class).getDispositivoById(dispositivo.getIdDispositivo()))
+                        .withSelfRel(),
+                linkTo(methodOn(DispositivoControllerV2.class).getAllDispositivos()).withRel("dispositivos"),
+                linkTo(methodOn(DispositivoControllerV2.class).getDispositivosByUsuario(dispositivo.getIdUsuario()))
+                        .withRel("usuario-dispositivos"));
     }
 }
-
