@@ -3,7 +3,6 @@ package com.User.user.controller;
 import com.User.user.model.Usuario;
 import com.User.user.service.UsuarioService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,13 @@ import java.util.List;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    // 1. Declaramos la variable como 'final' para que sea inmutable
+    private final UsuarioService usuarioService;
+
+    // 2. CORREGIDO: Inyección por Constructor (Adiós al warning de @Autowired)
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     // Modificado para listar todos O filtrar por nombre si se pasa el parámetro ?nombre=...
     @GetMapping
@@ -36,7 +40,8 @@ public class UsuarioController {
         }
     }
 
-    // NUEVO: Filtrar usuarios por el ID de su Tipo de Usuario (Ej: /api/usuarios/tipo/1)
+    // NUEVO: Filtrar usuarios por el ID de su Tipo de Usuario (Ej: /api/usuarios/tipo/1) 
+    // Recordar que solo hay 2 tipos de usuarios: admin y usuario 
     @GetMapping("/tipo/{idTipoUsuario}")
     public List<Usuario> listarPorTipoUsuario(@PathVariable Long idTipoUsuario) {
         return usuarioService.buscarPorTipoUsuario(idTipoUsuario);

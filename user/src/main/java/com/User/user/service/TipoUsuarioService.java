@@ -2,21 +2,26 @@ package com.User.user.service;
 
 import com.User.user.model.TipoUsuario;
 import com.User.user.repository.TipoUsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class TipoUsuarioService {
 
-    @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
+    // Cambiado a final para asegurar la inmutabilidad
+    private final TipoUsuarioRepository tipoUsuarioRepository;
     
+    // Inyección por Constructor (Elimina el warning de VS Code)
+    public TipoUsuarioService(TipoUsuarioRepository tipoUsuarioRepository) {
+        this.tipoUsuarioRepository = tipoUsuarioRepository;
+    }
+
     // Listar todos los tipos de usuarios
     public List<TipoUsuario> listarTodos() {
         return tipoUsuarioRepository.findAll();
     }
-    //busca los tipos de usuarios por id
+
+    // Busca los tipos de usuarios por id
     public TipoUsuario buscarPorId(Long id) {
         return tipoUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tipo de usuario no encontrado con ID: " + id));

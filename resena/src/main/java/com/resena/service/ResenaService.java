@@ -2,10 +2,9 @@ package com.resena.service;
 
 import org.springframework.stereotype.Service;
 
-// Importa aquí tu cliente Feign y tu DTO de Usuario cuando los tengas creados:
-// import com.resena.client.UsuarioFeignClient;
-// import com.resena.dto.UsuarioDTO;
-
+import com.resena.client.UsuarioFeignClient;
+import com.resena.dto.ResenaConUsuarioDTO;
+import com.resena.dto.UsuarioDTO;
 import com.resena.model.ResenaModel;
 import com.resena.repository.ResenaRepository;
 
@@ -17,21 +16,30 @@ import java.util.Optional;
 public class ResenaService {
 
     private final ResenaRepository resenaRepository;
+    private final UsuarioFeignClient usuarioFeignClient; // Cliente Feign integrado
 
-    // // Tu cliente Feign para conectar con el microservicio de usuarios si fuera
-    // necesario
-    // private final UsuarioFeignClient usuarioFeignClient;
-
-    // Inyección por Constructor (Evita el warning de VS Code)
-    public ResenaService(ResenaRepository resenaRepository) {
+    // Inyección limpia por constructor (evita cualquier alerta o warning de VS
+    // Code)
+    public ResenaService(ResenaRepository resenaRepository, UsuarioFeignClient usuarioFeignClient) {
         this.resenaRepository = resenaRepository;
+        this.usuarioFeignClient = usuarioFeignClient;
     }
 
-    // 1. Crear o Guardar una reseña
+    // 1. Crear o Guardar una reseña (Con validación remota mediante Feign)
     public ResenaModel crearResena(ResenaModel resena) {
-        // Lógica de negocio opcional: Validar si el idUsuario existe en el
-        // microservicio de usuarios vía Feign antes de guardar.
-        return resenaRepository.save(resena);
+        try {
+            // 🔍 Solo ejecutamos la llamada. Si el usuario no existe, Feign lanzará una
+            // excepción.
+            usuarioFeignClient.obtenerUsuarioPorId(resena.getIdUsuario());
+
+            // Si la llamada pasa sin errores, guardamos la reseña con total seguridad
+            return resenaRepository.save(resena);
+
+        } catch (Exception e) {
+            // Si el usuario remoto no existe o el servicio está apagado, frena la inserción
+            throw new RuntimeException("Error al registrar reseña: El usuario con ID "
+                    + resena.getIdUsuario() + " no existe en el sistema o el servidor no responde.");
+        }
     }
 
     // 2. Obtener todas las reseñas
@@ -44,7 +52,7 @@ public class ResenaService {
         return resenaRepository.findById(id);
     }
 
-    // 4. Actualizar una reseña (Adaptado a tu ResenaModel real)
+    // 4. Actualizar una reseña
     public ResenaModel actualizarResena(Long id, ResenaModel resenaDetalles) {
         return resenaRepository.findById(id).map(resena -> {
             resena.setCalificacion(resenaDetalles.getCalificacion());
@@ -69,35 +77,32 @@ public class ResenaService {
         return resenaRepository.findByFecha(fecha);
     }
 
-    // 7. Buscar reseñas por calificación (Corregido de 'buscarPorTotal' a
-    // 'buscarPorCalificacion')
+    // 7. Buscar reseñas por calificación
     public List<ResenaModel> buscarPorCalificacion(Integer calificacion) {
         return resenaRepository.findByCalificacion(calificacion);
     }
 
-    // 8. Buscar reseñas asociadas a un usuario específico (Muy útil para este
-    // microservicio)
+    // 8. Buscar reseñas asociadas a un usuario específico
     public List<ResenaModel> buscarPorUsuario(Long idUsuario) {
         return resenaRepository.findByIdUsuario(idUsuario);
     }
 
-    // =========================================================================
-    // EJEMPLO CON FEIGN: Obtener la reseña junto con la información del Usuario
-    // =========================================================================
-    /*
-     * public ResenaConUsuarioDTO obtenerResenaConSuUsuario(Long idResena) {
-     * ResenaModel resena = resenaRepository.findById(idResena)
-     * .orElseThrow(() -> new RuntimeException("Reseña no encontrada"));
-     * * // Consumimos el microservicio de usuarios usando Feign mediante el
-     * id_usuario guardado
-     * UsuarioDTO usuario =
-     * usuarioFeignClient.obtenerUsuarioPorId(resena.getIdUsuario());
-     * * // Armamos un DTO propio que junte ambas respuestas para devolverlo
-     * completo
-     * ResenaConUsuarioDTO respuesta = new ResenaConUsuarioDTO();
-     * respuesta.setResena(resena);
-     * respuesta.setUsuario(usuario);
-     * * return respuesta;
-     * }
-     */
+    // 9 Nuevo método para componer los datos de la reseña con su usuario remoto
+    public ResenaConUsuarioDTO obtenerResenaConSuUsuario(Long idResena) {
+        // 1. Buscamos la reseña localmente por su ID
+        ResenaModel resena = resenaRepository.findById(idResena)
+                .orElseThrow(() -> new RuntimeException("Reseña no encontrada con el id: " + idResena));
+
+        // 2. Consumimos el microservicio de usuarios usando Feign para traer los datos
+        // del perfil
+        UsuarioDTO usuario = usuarioFeignClient.obtenerUsuarioPorId(resena.getIdUsuario());
+
+        // 3. Juntamos ambos objetos en el DTO compuesto
+        ResenaConUsuarioDTO respuesta = new ResenaConUsuarioDTO();
+        respuesta.setResena(resena);
+        respuesta.setUsuario(usuario);
+
+        return respuesta;
+    }
+
 }

@@ -86,4 +86,15 @@ public class ResenaController {
         List<ResenaModel> resenas = resenaService.buscarPorUsuario(idUsuario);
         return ResponseEntity.ok(resenas);
     }
+
+    // 9. Obtener una reseña enriquecida con los datos completos de su usuario
+    @GetMapping("/{id}/completa")
+    public ResponseEntity<com.resena.dto.ResenaConUsuarioDTO> obtenerResenaCompleta(@PathVariable Long id) {
+        try {
+            com.resena.dto.ResenaConUsuarioDTO resenaCompleta = resenaService.obtenerResenaConSuUsuario(id);
+            return ResponseEntity.ok(resenaCompleta);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

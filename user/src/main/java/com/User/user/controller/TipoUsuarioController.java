@@ -3,7 +3,6 @@ package com.User.user.controller;
 import com.User.user.model.TipoUsuario;
 import com.User.user.service.TipoUsuarioService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +11,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/tipos-usuario")
 public class TipoUsuarioController {
 
-    @Autowired
-    private TipoUsuarioService tipoUsuarioService;
+    private final TipoUsuarioService tipoUsuarioService;
 
-// Modificado para listar todos O buscar por nombre exacto si se pasa ?nombre=...
+    // Inyección por Constructor (Adiós @Autowired manual)
+    public TipoUsuarioController(TipoUsuarioService tipoUsuarioService) {
+        this.tipoUsuarioService = tipoUsuarioService;
+    }
+
+    // Listar todos O buscar por nombre exacto si se pasa ?nombre=...
     @GetMapping
     public ResponseEntity<?> listar(@RequestParam(required = false) String nombre) {
         if (nombre != null && !nombre.trim().isEmpty()) {
