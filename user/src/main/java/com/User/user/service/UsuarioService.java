@@ -29,6 +29,7 @@ public class UsuarioService {
         }
         return usuarioRepository.save(usuario);
     }
+    
     // LISTAR POR NOMBRE (Búsqueda parcial e insensible a mayúsculas/minúsculas)
     public List<Usuario> buscarPorNombre(String nombre) {
         return usuarioRepository.findByNombreUsuarioContainingIgnoreCase(nombre);
