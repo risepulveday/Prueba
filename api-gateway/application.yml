@@ -1,0 +1,77 @@
+server:
+  port: 8090 # 🚀 Puerto único frontal para acceder a todo tu ecosistema y a Swagger
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # 1. Enrutamiento hacia Usuarios (Puerto 8080)
+        - id: user-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/usuario/**, /v3/api-docs/user
+
+        # 2. Enrutamiento hacia Reseñas (Puerto 8081)
+        - id: resena-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/resenas/**, /v3/api-docs/resena
+
+        # 3. Enrutamiento hacia Carrito (Puerto 8082)
+        - id: carrito-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/carrito/**, /v3/api-docs/carrito
+
+        # 4. Enrutamiento hacia Factura (Puerto 8083)
+        - id: factura-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/facturas/**, /v3/api-docs/factura
+
+        # 5. Enrutamiento hacia Juego (Puerto 8084)
+        - id: juego-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/juegos/**, /v3/api-docs/juego
+
+        # 6. Enrutamiento hacia Pago (Puerto 8085)
+        - id: pago-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/pagos/**, /v3/api-docs/pago
+
+        # 7. Enrutamiento hacia Oferta (Puerto 8086)
+        - id: oferta-service
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/ofertas/**, /api/v2/ofertas/**, /v3/api-docs/oferta
+
+        # 8. Enrutamiento hacia Dispositivo (Puerto 8087)
+        - id: dispositivo-service
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/dispositivo/**, /api/v2/dispositivos/**, /v3/api-docs/dispositivo
+
+# 🌐 Configuración del selector desplegable centralizado de Swagger
+springdoc:
+  swagger-ui:
+    urls:
+      - name: 1. Usuarios
+        url: /v3/api-docs/user
+      - name: 2. Reseñas
+        url: /v3/api-docs/resena
+      - name: 3. Carrito de Compras
+        url: /v3/api-docs/carrito
+      - name: 4. Facturación
+        url: /v3/api-docs/factura
+      - name: 5. Catálogo de Juegos
+        url: /v3/api-docs/juego
+      - name: 6. Pasarela de Pagos
+        url: /v3/api-docs/pago
+      - name: 7. Ofertas Especiales
+        url: /v3/api-docs/oferta
+      - name: 8. Gestión de Dispositivos
+        url: /v3/api-docs/dispositivo
