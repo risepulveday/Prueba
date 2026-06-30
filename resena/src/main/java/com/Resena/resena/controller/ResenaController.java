@@ -1,7 +1,7 @@
-package com.resena.controller;
+package com.Resena.resena.controller;
 
-import com.resena.model.ResenaModel;
-import com.resena.service.ResenaService;
+import com.Resena.resena.model.ResenaModel;
+import com.Resena.resena.service.ResenaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,12 +89,13 @@ public class ResenaController {
 
     // 9. Obtener una reseña enriquecida con los datos completos de su usuario
     @GetMapping("/{id}/completa")
-    public ResponseEntity<com.resena.dto.ResenaConUsuarioDTO> obtenerResenaCompleta(@PathVariable Long id) {
+    public ResponseEntity<?> obtenerResenaCompleta(@PathVariable Long id) {
         try {
-            com.resena.dto.ResenaConUsuarioDTO resenaCompleta = resenaService.obtenerResenaConSuUsuario(id);
+            com.Resena.resena.dto.ResenaConUsuarioDTO resenaCompleta = resenaService.obtenerResenaConSuUsuario(id);
             return ResponseEntity.ok(resenaCompleta);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            // 🛠️ Cambiamos esto para enviarle el error real a Swagger/Postman
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

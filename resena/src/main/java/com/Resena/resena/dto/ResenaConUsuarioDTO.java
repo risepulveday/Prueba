@@ -1,6 +1,6 @@
-package com.resena.dto;
+package com.Resena.resena.dto;
 
-import com.resena.model.ResenaModel;
+import com.Resena.resena.model.ResenaModel;
 import lombok.Data;
 
 @Data

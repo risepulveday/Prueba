@@ -1,4 +1,4 @@
-package com.resena.assemblers;
+package com.Resena.resena.assemblers;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -6,8 +6,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import com.resena.controller.ResenaControllerV2;
-import com.resena.model.ResenaModel;
+import com.Resena.resena.controller.ResenaControllerV2;
+import com.Resena.resena.model.ResenaModel;
 
 @Component
 public class ResenaModelAssembler implements RepresentationModelAssembler<ResenaModel, EntityModel<ResenaModel>> {

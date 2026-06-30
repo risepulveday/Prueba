@@ -1,7 +1,7 @@
-package com.resena.repository;
+package com.Resena.resena.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.resena.model.ResenaModel;
+import com.Resena.resena.model.ResenaModel;
 
 import java.sql.Date;
 import java.util.List;

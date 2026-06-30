@@ -1,4 +1,4 @@
-package com.resena.dto;
+package com.Resena.resena.dto;
 
 import lombok.Data;
 

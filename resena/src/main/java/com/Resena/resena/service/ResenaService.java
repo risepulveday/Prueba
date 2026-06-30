@@ -1,13 +1,13 @@
-package com.resena.service;
+package com.Resena.resena.service;
 
 import org.springframework.stereotype.Service;
 
-import com.resena.client.UsuarioFeignClient;
-import com.resena.dto.ResenaConUsuarioDTO;
-import com.resena.dto.UsuarioDTO;
+import com.Resena.resena.client.UsuarioFeignClient;
+import com.Resena.resena.dto.ResenaConUsuarioDTO;
+import com.Resena.resena.dto.UsuarioDTO;
 
-import com.resena.model.ResenaModel;
-import com.resena.repository.ResenaRepository;
+import com.Resena.resena.model.ResenaModel;
+import com.Resena.resena.repository.ResenaRepository;
 
 import java.sql.Date;
 import java.util.List;

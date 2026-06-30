@@ -1,4 +1,4 @@
-package com.resena.model;
+package com.Resena.resena.model;
 
 import java.sql.Date;
 

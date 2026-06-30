@@ -1,4 +1,4 @@
-package com.resena;
+package com.Resena.resena;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
