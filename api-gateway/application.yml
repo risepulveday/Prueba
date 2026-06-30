@@ -11,67 +11,84 @@ spring:
         - id: user-service
           uri: http://localhost:8080
           predicates:
-            - Path=/api/usuario/**, /v3/api-docs/user
+            - Path=/api/usuario/**, /user-docs/**
+          filters:
+            # Si la ruta es para Swagger (/user-docs/v3/api-docs), le quita el "/user-docs" antes de enviarla al puerto 8080
+            - RewritePath=/user-docs/(?<path>.*), /$\\{path\\}
 
         # 2. Enrutamiento hacia Reseñas (Puerto 8081)
         - id: resena-service
           uri: http://localhost:8081
           predicates:
-            - Path=/api/resenas/**, /v3/api-docs/resena
+            - Path=/api/resenas/**, /resena-docs/**
+          filters:
+            - RewritePath=/resena-docs/(?<path>.*), /$\\{path\\}
 
         # 3. Enrutamiento hacia Carrito (Puerto 8082)
         - id: carrito-service
           uri: http://localhost:8082
           predicates:
-            - Path=/api/carrito/**, /v3/api-docs/carrito
+            - Path=/api/carrito/**, /carrito-docs/**
+          filters:
+            - RewritePath=/carrito-docs/(?<path>.*), /$\\{path\\}
 
         # 4. Enrutamiento hacia Factura (Puerto 8083)
         - id: factura-service
           uri: http://localhost:8083
           predicates:
-            - Path=/api/facturas/**, /v3/api-docs/factura
+            - Path=/api/facturas/**, /factura-docs/**
+          filters:
+            - RewritePath=/factura-docs/(?<path>.*), /$\\{path\\}
 
         # 5. Enrutamiento hacia Juego (Puerto 8084)
         - id: juego-service
           uri: http://localhost:8084
           predicates:
-            - Path=/api/juegos/**, /v3/api-docs/juego
+            - Path=/api/juegos/**, /juego-docs/**
+          filters:
+            - RewritePath=/juego-docs/(?<path>.*), /$\\{path\\}
 
         # 6. Enrutamiento hacia Pago (Puerto 8085)
         - id: pago-service
           uri: http://localhost:8085
           predicates:
-            - Path=/api/pagos/**, /v3/api-docs/pago
+            - Path=/api/pagos/**, /pago-docs/**
+          filters:
+            - RewritePath=/pago-docs/(?<path>.*), /$\\{path\\}
 
         # 7. Enrutamiento hacia Oferta (Puerto 8086)
         - id: oferta-service
           uri: http://localhost:8086
           predicates:
-            - Path=/api/ofertas/**, /api/v2/ofertas/**, /v3/api-docs/oferta
+            - Path=/api/ofertas/**, /api/v2/ofertas/**, /oferta-docs/**
+          filters:
+            - RewritePath=/oferta-docs/(?<path>.*), /$\\{path\\}
 
         # 8. Enrutamiento hacia Dispositivo (Puerto 8087)
         - id: dispositivo-service
           uri: http://localhost:8087
           predicates:
-            - Path=/api/dispositivo/**, /api/v2/dispositivos/**, /v3/api-docs/dispositivo
+            - Path=/api/dispositivo/**, /api/v2/dispositivos/**, /dispositivo-docs/**
+          filters:
+            - RewritePath=/dispositivo-docs/(?<path>.*), /$\\{path\\}
 
 # 🌐 Configuración del selector desplegable centralizado de Swagger
 springdoc:
   swagger-ui:
     urls:
       - name: 1. Usuarios
-        url: /v3/api-docs/user
+        url: /user-docs/v3/api-docs
       - name: 2. Reseñas
-        url: /v3/api-docs/resena
+        url: /resena-docs/v3/api-docs
       - name: 3. Carrito de Compras
-        url: /v3/api-docs/carrito
+        url: /carrito-docs/v3/api-docs
       - name: 4. Facturación
-        url: /v3/api-docs/factura
+        url: /factura-docs/v3/api-docs
       - name: 5. Catálogo de Juegos
-        url: /v3/api-docs/juego
+        url: /juego-docs/v3/api-docs
       - name: 6. Pasarela de Pagos
-        url: /v3/api-docs/pago
+        url: /pago-docs/v3/api-docs
       - name: 7. Ofertas Especiales
-        url: /v3/api-docs/oferta
+        url: /oferta-docs/v3/api-docs
       - name: 8. Gestión de Dispositivos
-        url: /v3/api-docs/dispositivo
+        url: /dispositivo-docs/v3/api-docs
